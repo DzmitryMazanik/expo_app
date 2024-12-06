@@ -1,13 +1,15 @@
 import streamlit as st
 from openai import OpenAI
-from dotenv import load_dotenv
-import os
 
-load_dotenv()
+
+api_key  = st.text_input("Введите API-ключ")
+
 client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
+    api_key=api_key,
 )
+
 model = "gpt-4o-mini"
+
 
 # Initialize session state for partners if it doesn't exist
 if 'partners' not in st.session_state:
@@ -39,7 +41,7 @@ find_partners_prompt = f"""
     """
 
 if st.button('Получить рекомендацию'):
-    if nas_org_name and nas_org_description and partners_description:        
+    if nas_org_name and nas_org_description and partners_description and api_key:        
         try:
             response = client.chat.completions.create(
                 model=model,
